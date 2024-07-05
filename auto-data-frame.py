@@ -163,3 +163,8 @@ class AutoDataFrame(pd.DataFrame):
 def read_csv(*args, **kwargs):
     df = pd.read_csv(*args, **kwargs)
     return AutoDataFrame(df)
+
+
+def read_excel(*args, **kwargs):
+    df = pd.read_excel(*args, **kwargs)
+    return AutoDataFrame(df)
