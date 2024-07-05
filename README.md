@@ -9,7 +9,23 @@
     ```bash
     git clone https://github.com/Serovvans/auto_pandas
     ```
-2. Установите зависимости из requirements.txt:
+
+2. Настройте конфигурацию установки для llama-cpp
+    Для MacOS на M1
+    ```bash
+    CMAKE_ARGS="-DCMAKE_OSX_ARCHITECTURES=arm64 -DCMAKE_APPLE_SILICON_PROCESSOR=arm64 -DLLAMA_METAL=on" pip install --upgrade --verbose --force-reinstall --no-cache-dir llama-cpp-python
+    ```
+    Для Linux и MacOS(Intel)
+    ```bash
+    CMAKE_ARGS="-DLLAMA_BLAS=ON -DLLAMA_BLAS_VENDOR=OpenBLAS"
+    ```
+    Для Windows
+    ```bash
+    CMAKE_GENERATOR = "MinGW Makefiles"
+    CMAKE_ARGS = "-DLLAMA_OPENBLAS=on -DCMAKE_C_COMPILER=C:/w64devkit/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/w64devkit/bin/g++.exe"
+    ```
+
+3. Установите зависимости из requirements.txt:
 
     ```bash
     pip install -r auto_pandas/requirements.txt
