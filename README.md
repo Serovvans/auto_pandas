@@ -12,11 +12,11 @@
 2. Установите зависимости из requirements.txt:
 
     ```bash
-    pip install -r auto-pandas/requirements.txt
+    pip install -r auto_pandas/requirements.txt
     ```
 
 ## Использование
-auto-data-frame.py
+auto_data_frame.py
 Этот скрипт предоставляет класс AutoDataFrame, который расширяет возможности pandas.DataFrame и включает методы для автоматической генерации кода на основе описания задачи и данных.
 
 Пример использования
