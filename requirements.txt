@@ -52,3 +52,4 @@ urllib3==2.2.2
 yarl==1.9.4
 torch==2.2.2
 torchvision==0.17.2
+openpyxl
