@@ -33,11 +33,9 @@ class AutoDataFrame(pd.DataFrame):
 
     def __generate_algorithm(self, task):
         cols_description = self.__get_columns_description()
-        data_sample = self.head(1).to_string()
         
         prompt = (f"user: Сделай формулировку задачи более развернутой и переведи на английский, "
                   f"также добавь в условие описание датасета: {cols_description}. Вот условие задачи: {task}. "
-                  f"Пример данных:\n{data_sample}\n"
                   "bot:")
         
         output = chat_model(
