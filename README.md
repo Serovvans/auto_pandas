@@ -7,7 +7,7 @@
 1. Склонируйте репозиторий:
 
     ```bash
-    git clone https://github.com/Serovvans/auto-pandas
+    git clone https://github.com/Serovvans/auto_pandas
     ```
 2. Установите зависимости из requirements.txt:
 
@@ -21,7 +21,7 @@ auto-data-frame.py
 
 Пример использования
 ```python
-import auto-pandas.auto_data_frame as adf
+import auto_pandas.auto_data_frame as adf
 
 # Чтение CSV файла и создание экземпляра AutoDataFrame
 df = adf.read_csv('path/to/your/data.csv')
