@@ -137,6 +137,8 @@ class AutoDataFrame(pd.DataFrame):
             return None
         
     def extract_python_code(self, text):
+        if text is None:
+            return ""
         pattern = r'```python\n(.*?)\n```'
         match = re.search(pattern, text, re.DOTALL)
         return match.group(1) if match else ""
