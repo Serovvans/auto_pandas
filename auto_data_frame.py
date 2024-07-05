@@ -5,6 +5,7 @@ import torch
 from torch import mps
 
 device = torch.device("mps") if torch.backends.mps.is_available() else torch.device("cpu")
+print(device)
 
 code_model = Llama.from_pretrained(
     repo_id="TheBloke/CodeLlama-7B-Instruct-GGUF",
@@ -33,16 +34,18 @@ class AutoDataFrame(pd.DataFrame):
 
     def __generate_algorithm(self, task):
         cols_description = self.__get_columns_description()
+        data_example = self.head(1).to_string()
         
         prompt = (f"user: Сделай формулировку задачи более развернутой и переведи на английский, "
                   f"также добавь в условие описание датасета: {cols_description}. Вот условие задачи: {task}. "
+                  f"Пример данных: {data_example}"
                   "bot:")
         
         output = chat_model(
             prompt,
             temperature=0.7,
             top_p=1,
-            max_tokens=300,
+            max_tokens=350,
             echo=False
         )
         return output['choices'][0]['text']
@@ -53,7 +56,7 @@ class AutoDataFrame(pd.DataFrame):
                 prompt,
                 temperature=0.7,
                 top_p=1,
-                max_tokens=1500,
+                max_tokens=1200,
                 echo=False
             )
             return output['choices'][0]['text']
@@ -63,8 +66,8 @@ class AutoDataFrame(pd.DataFrame):
 
     def __generate_code_variants(self, task, num_variants=3):
         prompt = (f"[INST] Write Python code using pandas to solve the following problem. Ensure the code adheres to best practices, "
-                  f"handles edge cases, and is well-commented. Here is the detailed problem description: {task} "
-                  "The final function should accept the dataset as input and return answer\n[/INST]\n")
+                  f"handles edge cases. Here is the detailed problem description: {task} "
+                  "The function should accept the dataset as input and return answer\n[/INST]\n")
 
         variants = []
         for _ in range(num_variants):
@@ -108,7 +111,7 @@ class AutoDataFrame(pd.DataFrame):
         prompt = (f"user: Please review the following code to ensure it adheres to standard coding practices and formatting. "
                 "If there are any issues, correct them and provide the updated code. In answer must be only function code, which return value."
                 "This function must be called get_stat()"
-                f"Generated code:\n```python\n{generated_code}\n```\nbot: \n")
+                f"Generated code:\n```python\n{generated_code}\n```\nbot:")
         
         output = chat_model(
             prompt,
@@ -122,12 +125,17 @@ class AutoDataFrame(pd.DataFrame):
     def generate_code(self, task):
         try:
             cols_description = self.__get_columns_description()
+            print("Начало генерации")
             detailed_task = self.__generate_algorithm(task)
+            print("Расширено и преведено условие задачи")
             
             code_variants = self.__generate_code_variants(detailed_task)
+            print("Составлены варианты")
             best_code = self.__evaluate_code_variants(code_variants, detailed_task, cols_description)
+            print("Варианты оценены")
             
             validated_code = self.__validate_code_format(best_code)
+            print("Код приведен к нужному формату")
             
             return validated_code
         except Exception as e:
